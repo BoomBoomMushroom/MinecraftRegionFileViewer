@@ -1,0 +1,9 @@
+body{
+    background-color: #222222;
+    color: white;
+}
+
+#uploadSection>label{
+    font-size: large;
+    margin-right: 10px;
+}

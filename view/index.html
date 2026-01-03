@@ -1,0 +1,13 @@
+<head>
+    <link rel="stylesheet" href="./view.css">
+    <script src="../util/NBT.js"></script>
+    <script src="./view.js"></script>
+</head>
+<body>
+    <div id="uploadSection">
+        <label for="regionFileUpload">Upload Region File: </label>
+        <!-- only accept `.mca` files as thats the anvil file type we're supporting; `.mcr` is the old region format, that i can maybe add later -->
+        <!-- removed `multiple` to only allow 1 upload -->
+        <input type="file" accept=".mca" id="regionFileUpload" name="regionFileUpload" onchange="handleFileUpload(this.id)"/>
+    </div>
+</body>
