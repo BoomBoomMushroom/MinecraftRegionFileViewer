@@ -24,12 +24,39 @@ class Region{
         this.chunks = []
     }
 
+    // HELPER DEV FUNCTIONS
+    downloadURL(data, fileName) {
+        var a;
+        a = document.createElement('a');
+        a.href = data;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.click();
+        a.remove();
+    };
+    downloadRawBytes(data, fileName, mimeType) {
+        var blob, url;
+        blob = new Blob([data], {
+            type: mimeType
+        });
+        url = window.URL.createObjectURL(blob);
+        this.downloadURL(url, fileName);
+        setTimeout(function() {
+            return window.URL.revokeObjectURL(url);
+        }, 1000);
+    };
+    // EOF HELPER DEV FUNCTIONS
+
     loadFromByteArray(byteArray){
         this.rawBytes = byteArray;
         this.loadRegionChunkHeaders();
 
         // just read0 for now, later we can iterate over all the items in `regionChunkHeaders`
-        this.readChunkFromRegionIndex(0);
+        let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(0); // Uint8Array of bytes, that is NBT; we need to convert it now
+        //this.downloadRawBytes(rawChunkNTB, "rawNBT.nbt", "application/octet-stream");
+
+        let chunkNBT = createNBTFromByteArray(rawChunkNTB); // get the NBT object using the bytes from the fetch above
     }
 
     loadRegionChunkHeaders(){
@@ -45,7 +72,7 @@ class Region{
         console.log(this.regionChunkHeaders);
     }
 
-    readChunkFromRegionIndex(chunkIndex){
+    getRawChunkBytesFromRegionIndex(chunkIndex){
         let regionChunkHeader = this.regionChunkHeaders[chunkIndex];
         let readStartIndex = regionChunkHeader.offset * 0x1000; // 0x1000 = 4 * 1024 = 4 KiB
         
@@ -78,8 +105,10 @@ class Region{
                 break;
         }
 
-        console.log("Chunk; Read Length: " + readLength + " | Compression Type: " + compressionType);
+        console.log("Chunk; Read Length: " + readLength + " | Compression Type: " + compressionType + " | Chunk Data Bytes: ");
         console.log(chunkData);
+
+        return chunkData
     }
 }
 
