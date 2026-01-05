@@ -108,10 +108,28 @@ class NBT_READ_TAG_DATA{
         return [longTagValue, 8]
     }
     readFloatTag(byteArray, startOffset){
-        console.error("Float Tag is not implemented! Implement it now!");
+        let floatView = new DataView(
+            byteArray.buffer,
+            byteArray.byteOffset + startOffset,
+            4
+        )
+        let floatValue = floatView.getFloat32(0, false); // false to make it big endian
+
+        console.warn("Float Tag has been implemented but not tested to work! Verify the result! Result: `"+ floatValue +"`");
+
+        return [floatValue, 4];
     }
     readDoubleTag(byteArray, startOffset){
-        console.error("Double Tag is not implemented! Implement it now!");
+        let doubleView = new DataView(
+            byteArray.buffer,
+            byteArray.byteOffset + startOffset,
+            8
+        )
+        let doubleValue = doubleView.getFloat64(0, false); // false to make it big endian
+
+        console.warn("Double Tag has been implemented but not tested to work! Verify the result! Result: `"+ doubleValue +"`");
+
+        return [doubleValue, 8];
     }
     readByteArrayTag(byteArray, startOffset){
         let [byteArrayLength, bytesReadForLength] = this.readIntTag(byteArray, startOffset)
@@ -168,20 +186,20 @@ class NBT_READ_TAG_DATA{
             currentByteIndex += 1;
 
             if(tagType == NBT_TAG_TYPE.TAG_END){
-                console.log("End of this compound tag!")
+                //console.log("End of this compound tag!")
                 break;
             }
 
             let [tagName, tagNameBytesRead] = this.readStringTag(byteArray, currentByteIndex);
             currentByteIndex += tagNameBytesRead;
 
-            console.log("Making tag named `" + tagName + "` and of type `0x" + tagType.toString(16) + "`");
+            //console.log("Making tag named `" + tagName + "` and of type `0x" + tagType.toString(16) + "`");
 
             let tagDecodeFunction = this.getTagReadFunction(tagType);
             let [tagValue, tagBytesRead] = tagDecodeFunction(byteArray, currentByteIndex);
             currentByteIndex += tagBytesRead;
 
-            console.log("Tag Name: `"+ tagName +"` | Tag Type: `0x"+ tagType.toString(16) +"` | Tag Bytes Used: `"+ tagBytesRead +"` | Tag Value: ", tagValue);
+            //console.log("Tag Name: `"+ tagName +"` | Tag Type: `0x"+ tagType.toString(16) +"` | Tag Bytes Used: `"+ tagBytesRead +"` | Tag Value: ", tagValue);
             
             let tagObject = new NBT_TAG(tagType, tagName)
             tagObject.value = tagValue
@@ -192,22 +210,20 @@ class NBT_READ_TAG_DATA{
         return [jsonRepresentation, currentByteIndex-startOffset];
     }
     readIntArrayTag(byteArray, startOffset){
-        /*
         let [intArrayLength, bytesReadForLength] = this.readIntTag(byteArray, startOffset)
         startOffset += bytesReadForLength
 
         let valuesArray = [];
         for(let i=0; i<intArrayLength; i++){
             let intArrOffset = startOffset + i*4
-            let intArrOffset = this.readIntTag(byteArray, intArrOffset)[0] // index 0 b/c thats the value
-            valuesArray.push(intArrOffset);
+            let intArrReadValue = this.readIntTag(byteArray, intArrOffset)[0] // index 0 b/c thats the value
+            valuesArray.push(intArrReadValue);
         }
 
         // bytes to know the length of the array, amount of bytes read for the list
         let longArrayBytesRead = bytesReadForLength + 4 * intArrayLength;
 
         return [valuesArray, longArrayBytesRead]
-        */
     }
     readLongArrayTag(byteArray, startOffset){
         let [longArrayLength, bytesReadForLength] = this.readIntTag(byteArray, startOffset)
