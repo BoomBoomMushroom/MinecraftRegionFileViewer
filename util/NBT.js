@@ -223,6 +223,8 @@ class NBT_READ_TAG_DATA{
         // bytes to know the length of the array, amount of bytes read for the list
         let longArrayBytesRead = bytesReadForLength + 4 * intArrayLength;
 
+        console.warn("Int Array Tag has been implemented but not tested to work! Verify the result! Result: ", valuesArray);
+
         return [valuesArray, longArrayBytesRead]
     }
     readLongArrayTag(byteArray, startOffset){
@@ -250,6 +252,7 @@ function createNBTFromByteArray(byteArray){
     let index = 3;
 
     let [compoundOut, bytesRead] = nbtTagValueReader.readCompoundTag(byteArray, index);
-    console.log(compoundOut);
+    //console.log(compoundOut);
+    return compoundOut;
 }
 

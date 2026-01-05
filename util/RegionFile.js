@@ -52,11 +52,16 @@ class Region{
         this.rawBytes = byteArray;
         this.loadRegionChunkHeaders();
 
-        // just read0 for now, later we can iterate over all the items in `regionChunkHeaders`
-        let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(0); // Uint8Array of bytes, that is NBT; we need to convert it now
+        // just read 0 for now, later we can iterate over all the items in `regionChunkHeaders`
+        //let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(0); // Uint8Array of bytes, that is NBT; we need to convert it now
         //this.downloadRawBytes(rawChunkNTB, "rawNBT.nbt", "application/octet-stream");
 
-        let chunkNBT = createNBTFromByteArray(rawChunkNTB); // get the NBT object using the bytes from the fetch above
+        for(let i=0; i<(32*32); i++){
+            // iterate over every chunk in the region file; 32x32 chunks
+            let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(1);
+            let chunkNBT = createNBTFromByteArray(rawChunkNTB); // get the NBT object using the bytes from the fetch above
+            console.log(chunkNBT)
+        }
     }
 
     loadRegionChunkHeaders(){
@@ -105,8 +110,7 @@ class Region{
                 break;
         }
 
-        console.log("Chunk; Read Length: " + readLength + " | Compression Type: " + compressionType + " | Chunk Data Bytes: ");
-        console.log(chunkData);
+        console.log("Chunk; Read Length: " + readLength + " | Compression Type: " + compressionType + " | Chunk Data Bytes: ", chunkData);
 
         return chunkData
     }
