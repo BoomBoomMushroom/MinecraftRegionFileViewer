@@ -7,3 +7,61 @@ body{
     font-size: large;
     margin-right: 10px;
 }
+
+#chunkSquaresContainer>ol {
+    all: unset;
+    container-type: inline-size;
+    display: grid;
+    font-size: 2cqi;
+    gap: 1px;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: repeat(32, 1fr);
+
+    max-width: 50vw;
+    max-height: 50vh;
+}
+
+#chunkSquaresList>li {
+    aspect-ratio: 1 / 1;
+    background: #343434;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    padding: .25ch;
+    &.chunkStatus_empty{
+        background: #545454;
+    }
+    &.chunkStatus_structureStarts{
+        background-color: #999999;
+    }
+    &.chunkStatus_structureReferences{
+        background-color: #5F6191;
+    }
+    &.chunkStatus_biomes{
+        background: #80B252;
+    }
+    &.chunkStatus_noise{
+        background: #D1D1D1;
+    }
+    &.chunkStatus_surface{
+        background-color: #726809;
+    }
+    &.chunkStatus_cavers{
+        background-color: #303572;
+    }
+    &.chunkStatus_features{
+        background: #21C600;
+    }
+    &.chunkStatus_initLight{
+        background: #CCCCCC;
+    }
+    &.chunkStatus_light{
+        background-color: #FFE0A0;
+    }
+    &.chunkStatus_spawn{
+        background-color: #F26060;
+    }
+    &.chunkStatus_full{
+        background: #FFFFFF;
+    }
+}

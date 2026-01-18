@@ -251,6 +251,7 @@ function createNBTFromByteArray(byteArray){
     // it starts a compound tag a name that has a length of 0x0000 (so no name)
     let index = 3;
 
+    console.log(byteArray)
     let [compoundOut, bytesRead] = nbtTagValueReader.readCompoundTag(byteArray, index);
     //console.log(compoundOut);
     return compoundOut;

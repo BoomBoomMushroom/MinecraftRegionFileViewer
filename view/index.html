@@ -4,6 +4,7 @@
     <!-- Pako for ZLIB decompression -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js" integrity="sha512-g2TeAWw5GPnX7z0Kn8nFbYfeHcvAu/tx6d6mrLe/90mkCxO+RcptyYpksUz35EO337F83bZwcmUyHiHamspkfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
+    <script src="../util/timeSleep.js"></script>
     <script src="../util/NBT.js"></script>
     <script src="../util/RegionFile.js"></script>
     <script src="./view.js"></script>
@@ -14,5 +15,27 @@
         <!-- only accept `.mca` files as thats the anvil file type we're supporting; `.mcr` is the old region format, that i can maybe add later -->
         <!-- removed `multiple` to only allow 1 upload -->
         <input type="file" accept=".mca" id="regionFileUpload" name="regionFileUpload" onchange="handleFileUpload(this.id)"/>
+    </div>
+    <br>
+    <div id="chunkSquaresContainer">
+        <ol id="chunkSquaresList">
+            <!--
+            <li class="chunkSquares"></li>
+            <li class="chunkSquares"></li>
+            -->
+        </ol>
+        <script>
+            function fillChunkSquaresListWith32x32Chunks(){
+                // fill the chunksSquaresList element w/ list elements (32x32)
+                let chunkSqrList = document.getElementById("chunkSquaresList")
+                for(let i=0; i<32*32; i++){
+                    let chunkSqr = document.createElement("li")
+                    chunkSqr.id = "ChunkSquare-" + i.toString();
+                    chunkSqr.classList.add("chunkSquares")
+                    chunkSqrList.appendChild(chunkSqr);
+                }
+            }
+            fillChunkSquaresListWith32x32Chunks();
+        </script>
     </div>
 </body>

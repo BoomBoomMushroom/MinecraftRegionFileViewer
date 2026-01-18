@@ -58,9 +58,10 @@ class Region{
 
         for(let i=0; i<(32*32); i++){
             // iterate over every chunk in the region file; 32x32 chunks
-            let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(1);
+            let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(i);
             let chunkNBT = createNBTFromByteArray(rawChunkNTB); // get the NBT object using the bytes from the fetch above
-            console.log(chunkNBT)
+            this.chunks.push(chunkNBT);
+            //console.log(chunkNBT);
         }
     }
 
@@ -101,6 +102,7 @@ class Region{
                 break;
             case COMPRESSION_TYPE.UNCOMPRESSED:
                 // nothing to do, it's already good
+                chunkData = chunkDataRaw
                 break;
             case COMPRESSION_TYPE.LZ4:
                 console.error("LZ4 is not supported! Please implement it!");
@@ -108,6 +110,8 @@ class Region{
             case COMPRESSION_TYPE.CUSTOM:
                 console.error("Custom compression types are not supported! Please implement it!");
                 break;
+            default:
+                console.error("Unknown compression type! Compression Type: `"+ compressionType.toString(16) +"`")
         }
 
         console.log("Chunk; Read Length: " + readLength + " | Compression Type: " + compressionType + " | Chunk Data Bytes: ", chunkData);
