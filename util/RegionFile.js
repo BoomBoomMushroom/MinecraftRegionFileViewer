@@ -59,6 +59,12 @@ class Region{
         for(let i=0; i<(32*32); i++){
             // iterate over every chunk in the region file; 32x32 chunks
             let rawChunkNTB = this.getRawChunkBytesFromRegionIndex(i);
+
+            if(rawChunkNTB == null){
+                this.chunks.push(null)
+                continue;
+            }
+
             let chunkNBT = createNBTFromByteArray(rawChunkNTB); // get the NBT object using the bytes from the fetch above
             this.chunks.push(chunkNBT);
             //console.log(chunkNBT);
@@ -111,7 +117,13 @@ class Region{
                 console.error("Custom compression types are not supported! Please implement it!");
                 break;
             default:
+                if(compressionType == null){
+                    // how tf?!? I've seen this happen on region -1,-12 but idk why it does
+                    compressionType = -1; // set it to -1 so we can print it on the next lines
+                }
+                // if it says the compression type is 0, that is usually because the chunk hasn't started generating and there is no data there!
                 console.error("Unknown compression type! Compression Type: `"+ compressionType.toString(16) +"`")
+                return null;
         }
 
         console.log("Chunk; Read Length: " + readLength + " | Compression Type: " + compressionType + " | Chunk Data Bytes: ", chunkData);

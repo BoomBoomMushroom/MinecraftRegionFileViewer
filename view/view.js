@@ -35,6 +35,13 @@ async function regionFileDoneReading(event){
     for(let i=0; i<region.chunks.length; i++){
         let chunkNBT = region.chunks[i];
         let chunkStatusElement = chunkSqrList.childNodes[i].nextElementSibling;
+
+        // remove all classes besides the `chunkSquares` class
+        chunkStatusElement.removeAttribute("class")
+        chunkStatusElement.classList.add("chunkSquares");
+
+        if(chunkNBT == null){ continue; }
+
         let statusClass = "chunkStatus_"
 
         switch(chunkNBT["Status"].value){
